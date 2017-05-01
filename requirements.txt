@@ -1,2 +1,2 @@
 Flask==0.12.1
-influx==4.1.0
+influxdb==4.1.0
