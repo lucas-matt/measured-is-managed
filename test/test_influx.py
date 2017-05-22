@@ -1,6 +1,11 @@
-import os
 import unittest
 import logging
+import os
+
+# set to use unittest database
+DB = 'unittest'
+os.environ['DBNAME'] = DB
+
 import sys
 import persistence.influx as influx
 from influxdb import InfluxDBClient
@@ -10,19 +15,15 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-DB = 'unittest'
-
 class TestInflux(unittest.TestCase):
 
     def setUp(self):
-        os.environ['DBNAME'] = DB
         with app.app_context():
             influx.setup()
 
     def tearDown(self):
         with app.app_context():
             influx.teardown()
-        del os.environ['DBNAME']
 
     def test_get_connection(self):
         with app.app_context():
