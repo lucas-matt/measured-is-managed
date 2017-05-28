@@ -1,11 +1,5 @@
-import unittest
 import logging
-import os
-
-# set to use unittest database
-DB = 'unittest'
-os.environ['DBNAME'] = DB
-
+import db_fixture
 import sys
 import persistence.influx as influx
 from influxdb import InfluxDBClient
@@ -15,15 +9,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-class TestInflux(unittest.TestCase):
-
-    def setUp(self):
-        with app.app_context():
-            influx.setup()
-
-    def tearDown(self):
-        with app.app_context():
-            influx.teardown()
+class TestInflux(db_fixture.DBTestCase):
 
     def test_get_connection(self):
         with app.app_context():
@@ -39,6 +25,6 @@ class TestInflux(unittest.TestCase):
     def test_setup(self):
         with app.app_context():
             influx.setup()
-            db = InfluxDBClient('influxdb', 8086, 'root', 'root', DB)
-            dbs = [entry for entry in db.get_list_database() if entry['name'] == DB]
+            db = InfluxDBClient('influxdb', 8086, 'root', 'root', self.get_db_name())
+            dbs = [entry for entry in db.get_list_database() if entry['name'] == self.get_db_name()]
             self.assertGreater(len(dbs), 0)
