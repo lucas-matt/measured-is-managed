@@ -1,0 +1,10 @@
+metrics:
+  mood:
+    type: range
+    range:
+      start: 0
+      end: 9
+  exercise:
+    type: natural
+
+

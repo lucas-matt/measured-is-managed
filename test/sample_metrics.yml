@@ -1,0 +1,6 @@
+metrics:
+  mood:
+    type: natural
+    range:
+      start: 0
+      end: 9
